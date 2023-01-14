@@ -1,7 +1,6 @@
-import {Animated, Text} from 'react-native';
+import {Text, View} from 'react-native';
 import {styles} from './Header.styles';
 import React from 'react';
-import View = Animated.View;
 
 const HeaderComponent = (): JSX.Element => {
   return (
