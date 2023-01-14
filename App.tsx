@@ -4,6 +4,8 @@ import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
 import HeaderComponent from './src/components/Header';
 import {themes} from './src/assets/themes';
 
+import {Navigation} from './src/components/Navigation';
+
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -19,6 +21,7 @@ function App(): JSX.Element {
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <HeaderComponent />
+      <Navigation />
     </SafeAreaView>
   );
 }
