@@ -4,7 +4,6 @@ import {TProps} from '../../models/navigation';
 import {styles} from './Game.styles';
 import ReloadComponent from '../common/Reload';
 import CardComponent from '../common/Card';
-import {NTester_IMAGE} from '../../utils/constants';
 
 const GameComponent = ({route}: TProps): JSX.Element => {
   const option = route.params?.option;
@@ -16,11 +15,13 @@ const GameComponent = ({route}: TProps): JSX.Element => {
           onPress={() => console.log('test')}
         />
       </View>
-      <View>
-        <CardComponent
-          image={NTester_IMAGE}
-          onPress={() => console.log(option)}
-        />
+      <View style={styles.bottomBlock}>
+        {[...Array(8).keys()].map(() => (
+          <CardComponent
+            image={undefined}
+            onPress={() => console.log(option)}
+          />
+        ))}
       </View>
     </View>
   );
