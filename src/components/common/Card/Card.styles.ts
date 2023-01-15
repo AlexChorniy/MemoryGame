@@ -7,8 +7,13 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     width: gridPx(),
     height: gridPx(),
+    overflow: 'hidden',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  cardImage: {
+    width: gridPx(),
+    height: gridPx(),
   },
 });
