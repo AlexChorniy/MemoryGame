@@ -16,7 +16,7 @@ const NavigationComponent = () => {
             name={OptionType.home}
             component={HomeComponent}
             options={{
-              title: 'Select Difficulty',
+              title: OptionType.home,
             }}
           />
           <Stack.Screen
