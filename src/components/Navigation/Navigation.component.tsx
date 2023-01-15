@@ -19,21 +19,9 @@ const NavigationComponent = () => {
               title: OptionType.home,
             }}
           />
-          <Stack.Screen
-            name={OptionType.easy}
-            component={GameComponent}
-            initialParams={{option: OptionType.easy}}
-          />
-          <Stack.Screen
-            name={OptionType.medium}
-            component={GameComponent}
-            initialParams={{option: OptionType.medium}}
-          />
-          <Stack.Screen
-            name={OptionType.hard}
-            component={GameComponent}
-            initialParams={{option: OptionType.hard}}
-          />
+          <Stack.Screen name={OptionType.easy} component={GameComponent} />
+          <Stack.Screen name={OptionType.medium} component={GameComponent} />
+          <Stack.Screen name={OptionType.hard} component={GameComponent} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

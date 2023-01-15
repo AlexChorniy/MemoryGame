@@ -7,6 +7,8 @@ export enum OptionType {
   hard = 'Hard',
 }
 
+export type LevelType = OptionType.hard | OptionType.medium | OptionType.easy;
+
 export type RootStackParamList = {
   [OptionType.home]: undefined;
   [OptionType.easy]: {option: OptionType.easy};
@@ -14,4 +16,4 @@ export type RootStackParamList = {
   [OptionType.hard]: {option: OptionType.hard};
 };
 
-export type TProps = NativeStackScreenProps<RootStackParamList, OptionType>;
+export type TProps = NativeStackScreenProps<RootStackParamList, LevelType>;
