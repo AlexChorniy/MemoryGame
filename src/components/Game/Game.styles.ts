@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
-import {fontSizeStandard} from '../../../utils/styleHelpers';
-import {themes} from '../../../assets/themes';
+import {fontSizeStandard} from '../../utils/styleHelpers';
+import {themes} from '../../assets/themes';
 
 export const styles = StyleSheet.create({
   gameContainer: {

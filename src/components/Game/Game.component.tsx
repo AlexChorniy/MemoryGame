@@ -1,8 +1,9 @@
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import React from 'react';
-import {TProps} from '../../../models/navigation';
+import {TProps} from '../../models/navigation';
 import {styles} from './Game.styles';
-import ReloadComponent from '../Reload';
+import ReloadComponent from '../common/Reload';
+import CardComponent from '../common/Card';
 
 const GameComponent = ({route}: TProps): JSX.Element => {
   const option = route.params?.option;
@@ -14,7 +15,9 @@ const GameComponent = ({route}: TProps): JSX.Element => {
           onPress={() => console.log('test')}
         />
       </View>
-      <Text>Game {option}</Text>
+      <View>
+        <CardComponent onPress={() => console.log(option)} />
+      </View>
     </View>
   );
 };

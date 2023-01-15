@@ -2,7 +2,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeComponent from '../common/Home';
-import GameComponent from '../common/Game';
+import GameComponent from '../Game';
 import {OptionType, RootStackParamList} from '../../models/navigation';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
