@@ -5,7 +5,7 @@ import {DEFAULT_CARD_IMAGE} from '../../../utils/constants';
 
 type TProps = {
   onPress: () => void;
-  image: string | undefined;
+  image: number | undefined;
 };
 
 const CardComponent = ({onPress, image}: TProps): JSX.Element => {

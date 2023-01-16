@@ -11,7 +11,7 @@ export const YaraMila_IMAGE = require('../assets/images/tileImages/07_YaraMila.p
 export const YaraLiva_IMAGE = require('../assets/images/tileImages/08_YaraLiva.png');
 export const YaraPrideLogo_IMAGE = require('../assets/images/tileImages/09_YaraPrideLogo.png');
 
-export const IMAGES_LIST = [
+export const IMAGES_LIST: number[] = [
   NTester_IMAGE,
   YaraLiva_IMAGE,
   YaraMila_IMAGE,

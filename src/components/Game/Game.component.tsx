@@ -10,28 +10,31 @@ import {IMAGES_LIST} from '../../utils/constants';
 
 const GameComponent = ({route}: TProps): JSX.Element => {
   const option = route.params?.option;
-  const initialData: DataType[] = workWithGame.getInitialData(option);
+  const {
+    getInitialData,
+    getRandomData,
+    validateGameOptions: {validateOpenCardsAmount},
+  } = workWithGame;
+  const initialData: DataType[] = getInitialData(option);
   const [data, setData] = useState(initialData);
   const [randomData, setRandomData] = useState(
-    workWithGame.getRandomData(initialData.length, IMAGES_LIST.length),
+    getRandomData(initialData.length, IMAGES_LIST.length),
   );
 
   const onReloadHandler = () => {
     setData(initialData);
-    setRandomData(
-      workWithGame.getRandomData(initialData.length, IMAGES_LIST.length),
-    );
+    setRandomData(getRandomData(initialData.length, IMAGES_LIST.length));
   };
 
   const onPressHandler = (id: number) => {
     const randomNumber: number = randomData[id - 1];
     const getRandomImage = IMAGES_LIST[randomNumber];
 
-    setData(prev =>
-      prev.map(item =>
-        item.id === id ? {...item, image: getRandomImage} : item,
-      ),
+    const dataWithImage = data.map(item =>
+      item.id === id ? {...item, image: getRandomImage} : item,
     );
+
+    setData(validateOpenCardsAmount(dataWithImage));
   };
 
   return (
