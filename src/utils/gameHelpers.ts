@@ -1,6 +1,6 @@
 import {LevelType} from '../models/navigation';
 import {gameCardsMap} from './constants';
-import {DataType, WorkWithGameType} from '../models/game';
+import {WorkWithGameType} from '../models/game';
 
 export const workWithGame: WorkWithGameType = {
   getInitialData(gameLevel: LevelType) {
@@ -8,7 +8,7 @@ export const workWithGame: WorkWithGameType = {
       id: index + 1,
     }));
   },
-  getRandomData(originalDataLength: number, patternDataLength: number) {
+  getShuffleData(originalDataLength: number, patternDataLength: number) {
     let result: number[] = [];
     let uniqueRandomIndexes = new Set();
 
@@ -42,26 +42,6 @@ export const workWithGame: WorkWithGameType = {
     });
 
     return result;
-  },
-  validateGameOptions: {
-    validateOpenCardsAmount(data) {
-      const currentData = [...data];
-      let images: DataType[] = [];
-
-      currentData.map(item => {
-        if (item?.image || item.image === 0) {
-          images.push(item);
-        }
-      });
-
-      const lastImage = images[images.length - 1];
-
-      return images.length <= 2
-        ? currentData
-        : currentData.map(item =>
-            item.id === lastImage.id ? {id: item.id} : item,
-          );
-    },
   },
 };
 

@@ -1,5 +1,5 @@
 import {View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {TProps} from '../../models/navigation';
 import {styles} from './Game.styles';
 import ReloadComponent from '../common/Reload';
@@ -8,33 +8,41 @@ import {workWithGame} from '../../utils/gameHelpers';
 import {DataType} from '../../models/game';
 import {IMAGES_LIST} from '../../utils/constants';
 
+const {getInitialData, getShuffleData} = workWithGame;
+
 const GameComponent = ({route}: TProps): JSX.Element => {
   const option = route.params?.option;
-  const {
-    getInitialData,
-    getRandomData,
-    validateGameOptions: {validateOpenCardsAmount},
-  } = workWithGame;
+
   const initialData: DataType[] = getInitialData(option);
-  const [data, setData] = useState(initialData);
+  const [cards, setCards] = useState(initialData);
+  const [openCards, setOpenCards] = useState<DataType[]>([]);
   const [randomData, setRandomData] = useState(
-    getRandomData(initialData.length, IMAGES_LIST.length),
+    getShuffleData(initialData.length, IMAGES_LIST.length),
   );
 
+  useEffect(() => {
+    // setCards(prevState => prevState.map((card) => ));
+    console.log(openCards);
+  }, [openCards]);
+
   const onReloadHandler = () => {
-    setData(initialData);
-    setRandomData(getRandomData(initialData.length, IMAGES_LIST.length));
+    setCards(initialData);
+    setOpenCards([]);
+    setRandomData(getShuffleData(initialData.length, IMAGES_LIST.length));
   };
 
   const onPressHandler = (id: number) => {
     const randomNumber: number = randomData[id - 1];
     const getRandomImage = IMAGES_LIST[randomNumber];
 
-    const dataWithImage = data.map(item =>
-      item.id === id ? {...item, image: getRandomImage} : item,
-    );
-
-    setData(validateOpenCardsAmount(dataWithImage));
+    if (openCards.length <= 1) {
+      setOpenCards(prevState => [...prevState, {id, image: getRandomImage}]);
+      setCards(
+        cards.map(card =>
+          card.id === id ? {...card, image: getRandomImage} : card,
+        ),
+      );
+    }
   };
 
   return (
@@ -43,7 +51,7 @@ const GameComponent = ({route}: TProps): JSX.Element => {
         <ReloadComponent title={'New Game'} onPress={onReloadHandler} />
       </View>
       <View style={styles.bottomBlock}>
-        {data.map(({id, image}) => (
+        {cards.map(({id, image}) => (
           <CardComponent
             key={id}
             image={image}

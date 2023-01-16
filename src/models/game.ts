@@ -6,10 +6,5 @@ export type DataType = {
 };
 export type WorkWithGameType = {
   getInitialData: (gameLevel: LevelType) => DataType[];
-  getRandomData: (dataLength: number, patternLength: number) => number[];
-  validateGameOptions: {
-    validateOpenCardsAmount: <T extends DataType>(
-      data: T[],
-    ) => (T | {id: number})[];
-  };
+  getShuffleData: (dataLength: number, patternLength: number) => number[];
 };
