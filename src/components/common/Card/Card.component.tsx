@@ -1,15 +1,21 @@
-import {Image, Pressable} from 'react-native';
+import {Image, ImageSourcePropType, Pressable} from 'react-native';
 import React from 'react';
 import {styles} from './Card.styles';
 import {DEFAULT_CARD_IMAGE} from '../../../utils/constants';
 
 type TProps = {
   onPress: () => void;
-  image: number | undefined;
+  uri: ImageSourcePropType | undefined;
   disabled: boolean;
+  isOpen: boolean;
 };
 
-const CardComponent = ({onPress, image, disabled}: TProps): JSX.Element => {
+const CardComponent = ({
+  onPress,
+  uri,
+  disabled,
+  isOpen,
+}: TProps): JSX.Element => {
   return (
     <Pressable
       onPress={onPress}
@@ -17,7 +23,7 @@ const CardComponent = ({onPress, image, disabled}: TProps): JSX.Element => {
       disabled={disabled}>
       <Image
         alt={'card image'}
-        source={image || DEFAULT_CARD_IMAGE}
+        source={isOpen ? uri : DEFAULT_CARD_IMAGE}
         style={styles.cardImage}
       />
     </Pressable>
