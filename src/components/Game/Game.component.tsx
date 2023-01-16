@@ -13,12 +13,14 @@ const GameComponent = ({route}: TProps): JSX.Element => {
   const initialData: DataType[] = workWithGame.getInitialData(option);
   const [data, setData] = useState(initialData);
   const [randomData, setRandomData] = useState(
-    workWithGame.getRandomData(initialData),
+    workWithGame.getRandomData(initialData.length, IMAGES_LIST.length),
   );
 
   const onReloadHandler = () => {
     setData(initialData);
-    setRandomData(workWithGame.getRandomData(initialData));
+    setRandomData(
+      workWithGame.getRandomData(initialData.length, IMAGES_LIST.length),
+    );
   };
 
   const onPressHandler = (id: number) => {
