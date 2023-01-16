@@ -1,18 +1,15 @@
 import {View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {TProps} from '../../models/navigation';
 import {styles} from './Game.styles';
 import ReloadComponent from '../common/Reload';
 import CardComponent from '../common/Card';
 import {workWithGame} from '../../utils/gameHelpers';
+import {DataType} from '../../models/game';
 
 const GameComponent = ({route}: TProps): JSX.Element => {
-  const [data, setData] = useState<number[]>([]);
   const option = route.params?.option;
-
-  useEffect(() => {
-    setData(workWithGame.getInitialData(option));
-  }, [option]);
+  const [data] = useState<DataType[]>(workWithGame.getInitialData(option));
 
   return (
     <View style={styles.gameContainer}>
@@ -23,10 +20,11 @@ const GameComponent = ({route}: TProps): JSX.Element => {
         />
       </View>
       <View style={styles.bottomBlock}>
-        {data.map(() => (
+        {data.map(({id, image}) => (
           <CardComponent
-            image={undefined}
-            onPress={() => console.log(option)}
+            key={id}
+            image={image}
+            onPress={() => console.log(id)}
           />
         ))}
       </View>
