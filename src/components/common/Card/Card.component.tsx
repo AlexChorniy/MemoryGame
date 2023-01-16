@@ -6,11 +6,15 @@ import {DEFAULT_CARD_IMAGE} from '../../../utils/constants';
 type TProps = {
   onPress: () => void;
   image: number | undefined;
+  disabled: boolean;
 };
 
-const CardComponent = ({onPress, image}: TProps): JSX.Element => {
+const CardComponent = ({onPress, image, disabled}: TProps): JSX.Element => {
   return (
-    <Pressable onPress={onPress} style={styles.cardContainer}>
+    <Pressable
+      onPress={onPress}
+      style={styles.cardContainer}
+      disabled={disabled}>
       <Image
         alt={'card image'}
         source={image || DEFAULT_CARD_IMAGE}
