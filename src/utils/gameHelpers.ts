@@ -8,10 +8,10 @@ export const workWithGame: WorkWithGameType = {
       id: index + 1,
     }));
   },
-  getRandomData: <T>(data: T[]): (number | unknown)[] => {
-    let result: (number | unknown)[] = [];
+  getRandomData: <T>(data: T[]): number[] => {
+    let result: number[] = [];
     let uniqueRandomIndexes = new Set();
-    const dataLength = data.length - 1;
+    const dataLength = data.length;
 
     // getting the first part of unique array of number which would be displayed
     while ([...uniqueRandomIndexes].length < data.length / 2) {
@@ -19,7 +19,7 @@ export const workWithGame: WorkWithGameType = {
     }
 
     // getting the second part of array with random duplicating
-    [...uniqueRandomIndexes].map(uniqueItem => {
+    ([...uniqueRandomIndexes] as number[]).map(uniqueItem => {
       let firstUniqueIndex = 0;
       let secondUniqueIndex = 0;
 
@@ -45,5 +45,5 @@ export const workWithGame: WorkWithGameType = {
 };
 
 export const generateRandomInteger = (max: number) => {
-  return Math.floor(Math.random() * (max + 1));
+  return Math.floor(Math.random() * max);
 };

@@ -7,5 +7,5 @@ export type DataType = {
 
 export type WorkWithGameType = {
   getInitialData: (gameLevel: LevelType) => DataType[];
-  getRandomData: <T>(dara: T[]) => (number | unknown)[];
+  getRandomData: <T>(dara: T[]) => number[];
 };

@@ -6,10 +6,24 @@ import ReloadComponent from '../common/Reload';
 import CardComponent from '../common/Card';
 import {workWithGame} from '../../utils/gameHelpers';
 import {DataType} from '../../models/game';
+import {IMAGES_LIST} from '../../utils/constants';
 
 const GameComponent = ({route}: TProps): JSX.Element => {
   const option = route.params?.option;
-  const [data] = useState<DataType[]>(workWithGame.getInitialData(option));
+  const initialData: DataType[] = workWithGame.getInitialData(option);
+  const [data, setData] = useState(initialData);
+  const [randomData] = useState(workWithGame.getRandomData(initialData));
+
+  const onPressHandler = (id: number) => {
+    const randomNumber: number = randomData[id - 1];
+    const getRandomImage = IMAGES_LIST[randomNumber];
+
+    setData(prev =>
+      prev.map(item =>
+        item.id === id ? {...item, image: getRandomImage} : item,
+      ),
+    );
+  };
 
   return (
     <View style={styles.gameContainer}>
@@ -24,7 +38,7 @@ const GameComponent = ({route}: TProps): JSX.Element => {
           <CardComponent
             key={id}
             image={image}
-            onPress={() => console.log(id)}
+            onPress={() => onPressHandler(id)}
           />
         ))}
       </View>
