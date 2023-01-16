@@ -10,14 +10,14 @@ export const workWithGame: WorkWithGameType = {
   },
   getRandomData: (
     originalDataLength: number,
-    patternLength: number,
+    patternDataLength: number,
   ): number[] => {
     let result: number[] = [];
     let uniqueRandomIndexes = new Set();
 
     // getting the first part of unique array of number which would be displayed
     while ([...uniqueRandomIndexes].length < originalDataLength / 2) {
-      uniqueRandomIndexes.add(generateRandomInteger(patternLength));
+      uniqueRandomIndexes.add(generateRandomInteger(patternDataLength));
     }
 
     // getting the second part of array with random duplicating
