@@ -12,7 +12,14 @@ const GameComponent = ({route}: TProps): JSX.Element => {
   const option = route.params?.option;
   const initialData: DataType[] = workWithGame.getInitialData(option);
   const [data, setData] = useState(initialData);
-  const [randomData] = useState(workWithGame.getRandomData(initialData));
+  const [randomData, setRandomData] = useState(
+    workWithGame.getRandomData(initialData),
+  );
+
+  const onReloadHandler = () => {
+    setData(initialData);
+    setRandomData(workWithGame.getRandomData(initialData));
+  };
 
   const onPressHandler = (id: number) => {
     const randomNumber: number = randomData[id - 1];
@@ -28,10 +35,7 @@ const GameComponent = ({route}: TProps): JSX.Element => {
   return (
     <View style={styles.gameContainer}>
       <View style={styles.topBlock}>
-        <ReloadComponent
-          title={'New Game'}
-          onPress={() => console.log('test')}
-        />
+        <ReloadComponent title={'New Game'} onPress={onReloadHandler} />
       </View>
       <View style={styles.bottomBlock}>
         {data.map(({id, image}) => (
