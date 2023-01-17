@@ -1,15 +1,28 @@
 import {Text, View} from 'react-native';
 import React from 'react';
-import {OptionType, RootStackParamList} from '../../../models/navigation';
+import {
+  OptionType,
+  OrientationType,
+  RootStackParamList,
+} from '../../../models/navigation';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {styles} from './Home.styles';
 import ButtonComponent from '../Button';
+import {gridPx} from '../../../utils/styleHelpers';
+import {useOrientation} from '../../../hooks/useDimensions';
 
-export type TProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+export type TProps = NativeStackScreenProps<RootStackParamList, OptionType>;
 
 const HomeComponent = ({navigation}: TProps): JSX.Element => {
+  const {orientation} = useOrientation();
+
   return (
-    <View style={styles.homeContainer}>
+    <View
+      style={{
+        ...styles.homeContainer,
+        paddingTop:
+          orientation === OrientationType.landscape ? gridPx(3) : gridPx(10),
+      }}>
       <Text style={styles.homeTitle}>Select Difficulty</Text>
       <View style={styles.mainContainer}>
         <ButtonComponent

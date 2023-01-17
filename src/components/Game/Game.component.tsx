@@ -1,79 +1,103 @@
-import {View} from 'react-native';
+import {Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {TProps} from '../../models/navigation';
+import {OrientationType, TProps} from '../../models/navigation';
 import {styles} from './Game.styles';
 import ReloadComponent from '../common/Reload';
 import CardComponent from '../common/Card';
 import {workWithGame} from '../../utils/gameHelpers';
 import {DataType} from '../../models/game';
-import {IMAGES_LIST} from '../../utils/constants';
+import {IMAGES_LIST, widthStyleHelper} from '../../utils/constants';
+import {useOrientation} from '../../hooks/useDimensions';
+import {gridPx} from '../../utils/styleHelpers';
 
 const {getInitialData, getShuffleData} = workWithGame;
 
 const GameComponent = ({route}: TProps): JSX.Element => {
-  const initialData: DataType[] = getInitialData(route.params?.option);
+  const option = route.params?.option;
+  const initialData: DataType[] = getInitialData(option);
   const [cards, setCards] = useState(initialData);
-  const [openCards, setOpenCards] = useState<DataType[]>([]);
-  const [randomData, setRandomData] = useState(
+  const [openCards, setOpenCards] = useState<number[]>([]);
+  const [matchCount, setMatchCount] = useState<number>(0);
+  const [isWinner, setIsWinner] = useState<boolean>(false);
+  const [shuffle, setShuffle] = useState(
     getShuffleData(initialData.length, IMAGES_LIST.length),
   );
-  console.log('randomData', randomData);
-  console.log('cards', cards);
+
+  const {orientation} = useOrientation();
 
   useEffect(() => {
-    const firstCardImage = openCards[0]?.image;
-    const secondCardImage = openCards[1]?.image;
-    const firstCardId = openCards[0]?.id;
-    const secondCardId = openCards[1]?.id;
+    setCards(prevState =>
+      prevState.map((card, index) => ({
+        id: card.id,
+        uri: IMAGES_LIST[shuffle[index]],
+        shuffleIndex: shuffle[index],
+        disabled: false,
+        isOpen: false,
+      })),
+    );
+  }, [shuffle]);
 
-    if (openCards.length === 2 && firstCardImage !== secondCardImage) {
-      setOpenCards([]);
-      setCards(prevState =>
-        prevState.map(card =>
-          firstCardImage === card.image || secondCardImage === card.image
-            ? {
-                id: card.id,
-                disabled: card?.disabled || false,
-              }
-            : card,
-        ),
-      );
-    } else if (openCards.length === 2 && firstCardImage === secondCardImage) {
-      setCards(prevState =>
-        prevState.map(card =>
-          firstCardId === card.id || secondCardId === card.id
-            ? {
-                ...card,
-                disabled: true,
-              }
-            : card,
-        ),
-      );
-      setOpenCards([]);
+  useEffect(() => {
+    if (matchCount === cards.length / 2) {
+      const timer = setTimeout(() => {
+        setIsWinner(true);
+      }, 1500);
+
+      return () => clearTimeout(timer);
     }
-  }, [cards, openCards]);
+  }, [cards.length, matchCount]);
 
   const onReloadHandler = () => {
     setCards(initialData);
     setOpenCards([]);
-    setRandomData(getShuffleData(initialData.length, IMAGES_LIST.length));
+    setShuffle(getShuffleData(initialData.length, IMAGES_LIST.length));
   };
 
   const onPressHandler = (id: number) => {
-    const randomNumber: number = randomData[id - 1];
-    const getRandomImage = IMAGES_LIST[randomNumber];
+    const firstIndex = openCards[0] - 1;
+    const secondIndex = id - 1;
+    const firstImageIndex = cards[openCards[0] - 1]?.shuffleIndex;
+    const secondImageIndex = cards[id - 1]?.shuffleIndex;
 
-    if (
-      openCards.length <= 1 &&
-      !openCards[0]?.disabled &&
-      !openCards[1]?.disabled
-    ) {
-      setOpenCards(prevState => [...prevState, {id, image: getRandomImage}]);
-      setCards(
-        cards.map(card =>
-          card.id === id ? {...card, image: getRandomImage} : card,
+    if (openCards.length < 1) {
+      setOpenCards(prevState => [...prevState, id]);
+      setCards(prevState =>
+        prevState.map(card =>
+          card.id === id ? {...card, isOpen: true} : card,
         ),
       );
+    } else if (openCards.length < 2 && firstImageIndex !== secondImageIndex) {
+      setTimeout(() => {
+        setCards(prevState =>
+          prevState.map(card =>
+            [openCards[0], id].includes(card.id)
+              ? {...card, isOpen: false}
+              : card,
+          ),
+        );
+      }, 2000);
+
+      setOpenCards([]);
+
+      setCards(prevState =>
+        prevState.map(card =>
+          [openCards[0], id].includes(card.id) ? {...card, isOpen: true} : card,
+        ),
+      );
+    } else if (
+      openCards.length < 2 &&
+      firstImageIndex === secondImageIndex &&
+      secondIndex !== firstIndex
+    ) {
+      setCards(prevState =>
+        prevState.map(card =>
+          [openCards[0], id].includes(card.id)
+            ? {...card, isOpen: true, disabled: true}
+            : card,
+        ),
+      );
+      setMatchCount(prevState => prevState + 1);
+      setOpenCards([]);
     }
   };
 
@@ -82,15 +106,29 @@ const GameComponent = ({route}: TProps): JSX.Element => {
       <View style={styles.topBlock}>
         <ReloadComponent title={'New Game'} onPress={onReloadHandler} />
       </View>
-      <View style={styles.bottomBlock}>
-        {cards.map(({id, image, disabled = false}) => (
-          <CardComponent
-            key={id}
-            image={image}
-            disabled={disabled}
-            onPress={() => onPressHandler(id)}
-          />
-        ))}
+      <View
+        style={{
+          ...styles.bottomBlock,
+          width:
+            orientation === OrientationType.landscape
+              ? '40%'
+              : widthStyleHelper[route?.params.option],
+          marginTop:
+            orientation === OrientationType.landscape ? gridPx(5) : gridPx(2),
+        }}>
+        {isWinner ? (
+          <Text style={styles.winBlock}>Congratulation You Win!!!</Text>
+        ) : (
+          cards.map(({id, uri, disabled, isOpen}) => (
+            <CardComponent
+              key={id}
+              uri={uri}
+              disabled={disabled}
+              isOpen={isOpen}
+              onPress={() => onPressHandler(id)}
+            />
+          ))
+        )}
       </View>
     </View>
   );
