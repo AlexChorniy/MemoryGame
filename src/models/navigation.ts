@@ -7,13 +7,17 @@ export enum OptionType {
   hard = 'Hard',
 }
 
+export enum OrientationType {
+  portrait = 'PORTRAIT',
+  landscape = 'LANDSCAPE',
+}
+
 export type LevelType = OptionType.hard | OptionType.medium | OptionType.easy;
 
 export type RootStackParamList = {
   [OptionType.home]: undefined;
   [OptionType.easy]: {
     option: OptionType.easy;
-    setIsTime: (time: boolean) => void;
   };
   [OptionType.medium]: {option: OptionType.medium};
   [OptionType.hard]: {option: OptionType.hard};

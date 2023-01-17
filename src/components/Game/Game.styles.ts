@@ -14,7 +14,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bottomBlock: {
-    marginTop: gridPx(2),
     marginLeft: 'auto',
     marginRight: 'auto',
     width: '50%',
@@ -28,5 +27,11 @@ export const styles = StyleSheet.create({
     color: themes.grey,
     fontSize: fontSizeStandard(14),
     textTransform: 'uppercase',
+  },
+  winBlock: {
+    fontSize: fontSizeStandard(10),
+    textAlign: 'center',
+    fontWeight: '500',
+    color: themes.blue,
   },
 });

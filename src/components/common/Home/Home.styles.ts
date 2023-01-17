@@ -4,7 +4,6 @@ import {fontSizeStandard, gridPx} from '../../../utils/styleHelpers';
 
 export const styles = StyleSheet.create({
   homeContainer: {
-    paddingTop: gridPx(10),
     height: '50%',
     display: 'flex',
     justifyContent: 'center',

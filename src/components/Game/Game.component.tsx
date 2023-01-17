@@ -1,22 +1,29 @@
-import {View} from 'react-native';
+import {Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {TProps} from '../../models/navigation';
+import {OrientationType, TProps} from '../../models/navigation';
 import {styles} from './Game.styles';
 import ReloadComponent from '../common/Reload';
 import CardComponent from '../common/Card';
 import {workWithGame} from '../../utils/gameHelpers';
 import {DataType} from '../../models/game';
 import {IMAGES_LIST, widthStyleHelper} from '../../utils/constants';
+import {useOrientation} from '../../hooks/useDimensions';
+import {gridPx} from '../../utils/styleHelpers';
 
 const {getInitialData, getShuffleData} = workWithGame;
 
 const GameComponent = ({route}: TProps): JSX.Element => {
-  const initialData: DataType[] = getInitialData(route.params?.option);
+  const option = route.params?.option;
+  const initialData: DataType[] = getInitialData(option);
   const [cards, setCards] = useState(initialData);
   const [openCards, setOpenCards] = useState<number[]>([]);
+  const [matchCount, setMatchCount] = useState<number>(0);
+  const [isWinner, setIsWinner] = useState<boolean>(false);
   const [shuffle, setShuffle] = useState(
     getShuffleData(initialData.length, IMAGES_LIST.length),
   );
+
+  const {orientation} = useOrientation();
 
   useEffect(() => {
     setCards(prevState =>
@@ -29,6 +36,16 @@ const GameComponent = ({route}: TProps): JSX.Element => {
       })),
     );
   }, [shuffle]);
+
+  useEffect(() => {
+    if (matchCount === cards.length / 2) {
+      const timer = setTimeout(() => {
+        setIsWinner(true);
+      }, 1500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [cards.length, matchCount]);
 
   const onReloadHandler = () => {
     setCards(initialData);
@@ -79,6 +96,7 @@ const GameComponent = ({route}: TProps): JSX.Element => {
             : card,
         ),
       );
+      setMatchCount(prevState => prevState + 1);
       setOpenCards([]);
     }
   };
@@ -91,17 +109,26 @@ const GameComponent = ({route}: TProps): JSX.Element => {
       <View
         style={{
           ...styles.bottomBlock,
-          width: widthStyleHelper[route?.params.option],
+          width:
+            orientation === OrientationType.landscape
+              ? '40%'
+              : widthStyleHelper[route?.params.option],
+          marginTop:
+            orientation === OrientationType.landscape ? gridPx(5) : gridPx(2),
         }}>
-        {cards.map(({id, uri, disabled, isOpen}) => (
-          <CardComponent
-            key={id}
-            uri={uri}
-            disabled={disabled}
-            isOpen={isOpen}
-            onPress={() => onPressHandler(id)}
-          />
-        ))}
+        {isWinner ? (
+          <Text style={styles.winBlock}>Congratulation You Win!!!</Text>
+        ) : (
+          cards.map(({id, uri, disabled, isOpen}) => (
+            <CardComponent
+              key={id}
+              uri={uri}
+              disabled={disabled}
+              isOpen={isOpen}
+              onPress={() => onPressHandler(id)}
+            />
+          ))
+        )}
       </View>
     </View>
   );
