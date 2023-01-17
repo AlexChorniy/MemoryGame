@@ -1,5 +1,5 @@
 import {Animated, Image, ImageSourcePropType, Pressable} from 'react-native';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {styles} from './Card.styles';
 import {DEFAULT_CARD_IMAGE} from '../../../utils/constants';
 
@@ -16,20 +16,28 @@ const CardComponent = ({
   disabled,
   isOpen,
 }: TProps): JSX.Element => {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const [open, setOpen] = useState<boolean>();
+  const rotateAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    console.log('test');
-    Animated.timing(fadeAnim, {
+    Animated.timing(rotateAnim, {
       toValue: isOpen ? 1 : 0,
       duration: 2100,
       useNativeDriver: true,
     }).start();
-  }, [fadeAnim, isOpen]);
+  }, [rotateAnim, isOpen]);
 
-  const rotate = fadeAnim.interpolate({
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setOpen(isOpen);
+    }, 670);
+
+    return () => clearTimeout(timer);
+  }, [isOpen, open]);
+
+  const rotate = rotateAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '180deg'],
+    outputRange: ['0deg', '360deg'],
   });
 
   return (
@@ -47,7 +55,7 @@ const CardComponent = ({
         disabled={disabled}>
         <Image
           alt={'card image'}
-          source={isOpen ? uri : DEFAULT_CARD_IMAGE}
+          source={open ? uri : DEFAULT_CARD_IMAGE}
           style={styles.cardImage}
         />
       </Pressable>
