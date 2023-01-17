@@ -11,7 +11,10 @@ export type LevelType = OptionType.hard | OptionType.medium | OptionType.easy;
 
 export type RootStackParamList = {
   [OptionType.home]: undefined;
-  [OptionType.easy]: {option: OptionType.easy};
+  [OptionType.easy]: {
+    option: OptionType.easy;
+    setIsTime: (time: boolean) => void;
+  };
   [OptionType.medium]: {option: OptionType.medium};
   [OptionType.hard]: {option: OptionType.hard};
 };

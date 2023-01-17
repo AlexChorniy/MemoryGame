@@ -42,10 +42,7 @@ const GameComponent = ({route}: TProps): JSX.Element => {
     const firstImageIndex = cards[openCards[0] - 1]?.shuffleIndex;
     const secondImageIndex = cards[id - 1]?.shuffleIndex;
 
-    console.log(shuffle);
-
     if (openCards.length < 1) {
-      console.log('first');
       setOpenCards(prevState => [...prevState, id]);
       setCards(prevState =>
         prevState.map(card =>
@@ -53,7 +50,6 @@ const GameComponent = ({route}: TProps): JSX.Element => {
         ),
       );
     } else if (openCards.length < 2 && firstImageIndex !== secondImageIndex) {
-      console.log('second');
       setTimeout(() => {
         setCards(prevState =>
           prevState.map(card =>
@@ -64,19 +60,18 @@ const GameComponent = ({route}: TProps): JSX.Element => {
         );
       }, 2000);
 
+      setOpenCards([]);
+
       setCards(prevState =>
         prevState.map(card =>
           [openCards[0], id].includes(card.id) ? {...card, isOpen: true} : card,
         ),
       );
-
-      setOpenCards([]);
     } else if (
       openCards.length < 2 &&
       firstImageIndex === secondImageIndex &&
       secondIndex !== firstIndex
     ) {
-      console.log('third', firstIndex, id);
       setCards(prevState =>
         prevState.map(card =>
           [openCards[0], id].includes(card.id)
