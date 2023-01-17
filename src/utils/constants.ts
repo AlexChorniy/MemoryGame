@@ -28,3 +28,9 @@ export const gameCardsMap: Record<LevelType, number> = {
   [OptionType.medium]: 12,
   [OptionType.hard]: 16,
 };
+
+export const widthStyleHelper: Record<LevelType, string> = {
+  [OptionType.easy]: '50%',
+  [OptionType.medium]: '60%',
+  [OptionType.hard]: '80%',
+};

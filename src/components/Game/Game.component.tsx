@@ -6,7 +6,7 @@ import ReloadComponent from '../common/Reload';
 import CardComponent from '../common/Card';
 import {workWithGame} from '../../utils/gameHelpers';
 import {DataType} from '../../models/game';
-import {IMAGES_LIST} from '../../utils/constants';
+import {IMAGES_LIST, widthStyleHelper} from '../../utils/constants';
 
 const {getInitialData, getShuffleData} = workWithGame;
 
@@ -88,7 +88,11 @@ const GameComponent = ({route}: TProps): JSX.Element => {
       <View style={styles.topBlock}>
         <ReloadComponent title={'New Game'} onPress={onReloadHandler} />
       </View>
-      <View style={styles.bottomBlock}>
+      <View
+        style={{
+          ...styles.bottomBlock,
+          width: widthStyleHelper[route?.params.option],
+        }}>
         {cards.map(({id, uri, disabled, isOpen}) => (
           <CardComponent
             key={id}

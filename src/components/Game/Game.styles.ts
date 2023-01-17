@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     marginTop: gridPx(2),
     marginLeft: 'auto',
     marginRight: 'auto',
-    width: '80%',
+    width: '50%',
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
