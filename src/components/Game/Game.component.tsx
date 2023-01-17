@@ -1,6 +1,6 @@
 import {Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {OrientationType, TProps} from '../../models/navigation';
+import {OptionType, OrientationType, TProps} from '../../models/navigation';
 import {styles} from './Game.styles';
 import ReloadComponent from '../common/Reload';
 import CardComponent from '../common/Card';
@@ -12,7 +12,7 @@ import {gridPx} from '../../utils/styleHelpers';
 
 const {getInitialData, getShuffleData} = workWithGame;
 
-const GameComponent = ({route}: TProps): JSX.Element => {
+const GameComponent = ({route, navigation}: TProps): JSX.Element => {
   const option = route.params?.option;
   const initialData: DataType[] = getInitialData(option);
   const [cards, setCards] = useState(initialData);
@@ -41,11 +41,18 @@ const GameComponent = ({route}: TProps): JSX.Element => {
     if (matchCount === cards.length / 2) {
       const timer = setTimeout(() => {
         setIsWinner(true);
-      }, 1500);
+      }, 2000);
 
-      return () => clearTimeout(timer);
+      const navTimer = setTimeout(() => {
+        navigation.navigate(OptionType.home);
+      }, 7000);
+
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(navTimer);
+      };
     }
-  }, [cards.length, matchCount]);
+  }, [cards.length, matchCount, navigation]);
 
   const onReloadHandler = () => {
     setCards(initialData);

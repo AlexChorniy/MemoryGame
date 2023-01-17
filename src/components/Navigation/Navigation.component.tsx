@@ -11,7 +11,7 @@ const NavigationComponent = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={OptionType.home}>
-        <Stack.Group screenOptions={{headerShown: true}}>
+        <Stack.Group screenOptions={{headerShown: false}}>
           <Stack.Screen
             name={OptionType.home}
             component={HomeComponent}
