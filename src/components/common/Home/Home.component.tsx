@@ -9,7 +9,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {styles} from './Home.styles';
 import ButtonComponent from '../Button';
 import {gridPx} from '../../../utils/styleHelpers';
-import {useOrientation} from '../../../hooks/useDimensions';
+import {useOrientation} from '../../../hooks/useOrientation';
 
 export type TProps = NativeStackScreenProps<RootStackParamList, OptionType>;
 
